@@ -41,7 +41,7 @@ class Solution:
         item_sum_group=self.chipo.groupby(["item_name"]).sum({"quantity":"sum"})
         most_ordered=item_sum_group.sort_values("quantity", ascending=False)
         item_name=most_ordered.index[0]
-        order_id,quantity=most_ordered.values[0]
+        order_id,quantity=most_ordered.values[0] #order_id would be irrelevant in this question. 
         return item_name, order_id, quantity
 
     def total_item_orders(self) -> int:
@@ -135,12 +135,12 @@ def test() -> None:
     #assert quantity == 159
     total = solution.total_item_orders()
     assert total == 4972
-    #assert 39237.02 == solution.total_sales()
+    assert 39237.02 == solution.total_sales()
     assert 1834 == solution.num_orders()
     assert 21.39 == solution.average_sales_amount_per_order()
-    #eassert 50 == solution.num_different_items_sold()
-    #solution.plot_histogram_top_x_popular_items(5)
-    #solution.scatter_plot_num_items_per_order_price()
+    eassert 50 == solution.num_different_items_sold()
+    solution.plot_histogram_top_x_popular_items(5)
+    solution.scatter_plot_num_items_per_order_price()
     
     
 if __name__ == "__main__":
