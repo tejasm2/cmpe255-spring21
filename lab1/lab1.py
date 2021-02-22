@@ -138,7 +138,7 @@ def test() -> None:
     assert 39237.02 == solution.total_sales()
     assert 1834 == solution.num_orders()
     assert 21.39 == solution.average_sales_amount_per_order()
-    eassert 50 == solution.num_different_items_sold()
+    assert 50 == solution.num_different_items_sold()
     solution.plot_histogram_top_x_popular_items(5)
     solution.scatter_plot_num_items_per_order_price()
     
