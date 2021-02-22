@@ -52,10 +52,8 @@ class Solution:
         # TODO 
         # 1. Create a lambda function to change all item prices to float.
         # 2. Calculate total sales.
-        #self.chipo['item_price'] = self.chipo.item_price.apply(lambda x: float(x[1:]))
         item_prices = self.chipo.item_price.apply(lambda x: float(x[1:]))
         print((item_prices * self.chipo.quantity).sum())
-        #return (self.chipo.item_price * self.chipo.quantity).sum()
         return (item_prices * self.chipo.quantity).sum()
    
     def num_orders(self) -> int:
@@ -65,9 +63,7 @@ class Solution:
     
     def average_sales_amount_per_order(self) -> float:
         # TODO
-        #self.chipo['item_price'] = self.chipo.item_price.apply(lambda x: float(x[1:]))
         item_price_all = self.chipo.item_price.apply(lambda x: float(x[1:]))
-        #totalprice=(self.chipo.item_price * self.chipo.quantity).sum()
         totalprice=(item_price_all * self.chipo.quantity).sum()
         orders= self.chipo["order_id"].iloc[-1]
         average="{:.2f}".format(totalprice/orders)
