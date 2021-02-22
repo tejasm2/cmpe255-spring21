@@ -52,9 +52,11 @@ class Solution:
         # TODO 
         # 1. Create a lambda function to change all item prices to float.
         # 2. Calculate total sales.
-        self.chipo['item_price'] = self.chipo.item_price.apply(lambda x: float(x[1:]))
-        print((self.chipo.item_price * self.chipo.quantity).sum())
-        return (self.chipo.item_price * self.chipo.quantity).sum()
+        #self.chipo['item_price'] = self.chipo.item_price.apply(lambda x: float(x[1:]))
+        item_prices = self.chipo.item_price.apply(lambda x: float(x[1:]))
+        print((item_prices * self.chipo.quantity).sum())
+        #return (self.chipo.item_price * self.chipo.quantity).sum()
+        return (item_prices * self.chipo.quantity).sum()
    
     def num_orders(self) -> int:
         # TODO
@@ -63,8 +65,10 @@ class Solution:
     
     def average_sales_amount_per_order(self) -> float:
         # TODO
-        self.chipo['item_price'] = self.chipo.item_price.apply(lambda x: float(x[1:]))
-        totalprice=(self.chipo.item_price * self.chipo.quantity).sum()
+        #self.chipo['item_price'] = self.chipo.item_price.apply(lambda x: float(x[1:]))
+        item_price_all = self.chipo.item_price.apply(lambda x: float(x[1:]))
+        #totalprice=(self.chipo.item_price * self.chipo.quantity).sum()
+        totalprice=(item_price_all * self.chipo.quantity).sum()
         orders= self.chipo["order_id"].iloc[-1]
         average="{:.2f}".format(totalprice/orders)
         print(average)
@@ -137,6 +141,7 @@ def test() -> None:
     assert total == 4972
     assert 39237.02 == solution.total_sales()
     assert 1834 == solution.num_orders()
+    print(solution.average_sales_amount_per_order())
     assert 21.39 == solution.average_sales_amount_per_order()
     assert 50 == solution.num_different_items_sold()
     solution.plot_histogram_top_x_popular_items(5)
