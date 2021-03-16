@@ -12,7 +12,7 @@ mpl.rc('ytick', labelsize=12)
 
 # Where to save the figures
 PROJECT_ROOT_DIR = "."
-IMAGE_DIR = "FIXME"
+IMAGE_DIR = "images"
 
 def save_fig(fig_id, tight_layout=True):
     path = os.path.join(PROJECT_ROOT_DIR, "images", IMAGE_DIR, fig_id + ".png")
@@ -25,24 +25,24 @@ def save_fig(fig_id, tight_layout=True):
 def random_digit():
     some_digit = X[36000]
     some_digit_image = some_digit.reshape(28, 28)
-    plt.imshow(some_digit_image, cmap = mpl.cm.binary,
-            interpolation="nearest")
+    plt.imshow(some_digit_image, cmap = mpl.cm.binary,interpolation="nearest")
     plt.axis("off")
 
     save_fig("some_digit_plot")
     plt.show()
+    return some_digit
 
    
-def load_and_sort()
+def load_and_sort():
     try:
         from sklearn.datasets import fetch_openml
-        mnist = fetch_openml('mnist_784', version=1, cache=True)
+        mnist = fetch_openml('mnist_784', version=1,as_frame=False,cache=True)
         mnist.target = mnist.target.astype(np.int8) # fetch_openml() returns targets as strings
         sort_by_target(mnist) # fetch_openml() returns an unsorted dataset
     except ImportError:
         from sklearn.datasets import fetch_mldata
         mnist = fetch_mldata('MNIST original')
-    mnist["data"], mnist["target"]
+    return mnist["data"], mnist["target"]
 
 
 def sort_by_target(mnist):
@@ -54,19 +54,34 @@ def sort_by_target(mnist):
     mnist.target[60000:] = mnist.target[reorder_test + 60000]
 
 
-def train_predict(some_digit):
+def train_predict(some_digit, X_train, X_test, y_train, y_test):
     import numpy as np
     shuffle_index = np.random.permutation(60000)
     X_train, y_train = X_train[shuffle_index], y_train[shuffle_index]
 
-    # Example: Binary number 4 Classifier
-    y_train_4 = (y_train == 4)
-    y_test_4 = (y_test == 4)
+    # Example: Binary number 5 Classifier
+    y_train_5 = (y_train == 5)
+    y_test_5 = (y_test == 5)
 
     from sklearn.linear_model import SGDClassifier
     # TODO
     # print prediction result of the given input some_digit
+    model = SGDClassifier(random_state=45)
+    model.fit(X_train, y_train_5)
+    model.predict([some_digit])
+    print(model.predict([some_digit]))
+    calculate_cross_val_score(model,y_train_5)
     
     
-def calculate_cross_val_score():
+def calculate_cross_val_score(model, y_train_5):
     # TODO
+    from sklearn.model_selection import cross_val_score
+    print(cross_val_score(model, X_train, y_train_5, cv=3, scoring="accuracy"))
+    # calculate_cross_val_score()
+
+if __name__ == "__main__":
+    # execute only if run as a script
+    X,y= load_and_sort()
+    some_digit= random_digit()
+    X_train, X_test, y_train, y_test = X[:60000], X[60000:], y[:60000], y[60000:]
+    train_predict(some_digit, X_train, X_test, y_train, y_test)
